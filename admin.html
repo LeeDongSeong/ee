@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 대시보드 | Vibe Store</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+<a class="skip-link" href="#adminMain">본문 바로가기</a>
+
+<div id="app">
+    <header class="site-header">
+        <div class="header-top">
+            <button id="goStoreBtn" class="logo" type="button" aria-label="스토어로 이동">
+                Vibe Store Admin
+            </button>
+
+            <div class="header-actions">
+                <button id="adminUserInfoBtn" class="icon-btn" type="button">관리자</button>
+                <button id="adminLogoutBtn" class="icon-btn" type="button">로그아웃</button>
+                <button id="goIndexBtn" class="icon-btn" type="button">스토어 홈</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="adminMain" class="main-content">
+        <section class="panel admin-page-panel" aria-label="관리자 대시보드">
+            <div class="admin-header">
+                <h1>관리자 대시보드</h1>
+                <p class="muted">주문 내역 조회 및 상품 CRUD를 관리합니다.</p>
+            </div>
+
+            <div class="admin-grid">
+                <div class="admin-block">
+                    <h2>주문 내역 조회</h2>
+                    <div id="adminOrderList" class="order-list"></div>
+                    <div id="orderPagination" class="pagination"></div>
+                </div>
+
+                <div class="admin-block">
+                    <h2>상품 추가</h2>
+                    <form id="addProductForm" class="admin-form">
+                        <div class="form-row">
+                            <label for="addName">상품명</label>
+                            <input id="addName" type="text" maxlength="80" required />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="addCategory">카테고리</label>
+                            <input id="addCategory" type="text" maxlength="30" required />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="addPrice">판매가</label>
+                            <input id="addPrice" type="number" min="0" step="1" required />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="addOriginalPrice">원가</label>
+                            <input id="addOriginalPrice" type="number" min="0" step="1" value="0" />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="addImage">이미지 URL</label>
+                            <input id="addImage" type="url" maxlength="500" />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="addBadge">혜택 뱃지</label>
+                            <input id="addBadge" type="text" maxlength="30" />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="addDesc">상품 설명</label>
+                            <textarea id="addDesc" rows="4" maxlength="500"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <label>옵션 목록</label>
+                            <div id="addOptionList" class="option-editor-list"></div>
+                            <button id="addOptionRowBtn" class="secondary-btn" type="button">옵션 행 추가</button>
+                        </div>
+
+                        <button type="submit" class="primary-btn full-btn">상품 추가</button>
+                    </form>
+                </div>
+
+                <div class="admin-block">
+                    <h2>상품 수정</h2>
+                    <div id="adminProductList" class="admin-product-list"></div>
+                    <div id="productPagination" class="pagination"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- 상품 수정 모달 -->
+<div id="editProductModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close="edit-product"></div>
+    <div class="modal-panel admin-edit-modal-panel">
+        <div class="modal-header">
+            <h2>상품 수정</h2>
+            <button id="closeEditModalBtn" class="modal-close" type="button" data-close="edit-product">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <form id="editProductForm" class="admin-form">
+                <input id="editProductId" type="hidden" />
+
+                <div class="form-row">
+                    <label for="editName">상품명</label>
+                    <input id="editName" type="text" maxlength="80" required />
+                </div>
+
+                <div class="form-row">
+                    <label for="editCategory">카테고리</label>
+                    <input id="editCategory" type="text" maxlength="30" required />
+                </div>
+
+                <div class="form-row">
+                    <label for="editPrice">판매가</label>
+                    <input id="editPrice" type="number" min="0" step="1" required />
+                </div>
+
+                <div class="form-row">
+                    <label for="editOriginalPrice">원가</label>
+                    <input id="editOriginalPrice" type="number" min="0" step="1" />
+                </div>
+
+                <div class="form-row">
+                    <label for="editImage">이미지 URL</label>
+                    <input id="editImage" type="url" maxlength="500" />
+                </div>
+
+                <div class="form-row">
+                    <label for="editBadge">혜택 뱃지</label>
+                    <input id="editBadge" type="text" maxlength="30" />
+                </div>
+
+                <div class="form-row">
+                    <label for="editDesc">상품 설명</label>
+                    <textarea id="editDesc" rows="4" maxlength="500"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <label>옵션 및 재고 수정</label>
+                    <div id="editOptionList" class="option-editor-list"></div>
+                    <button id="editOptionRowBtn" class="secondary-btn" type="button">옵션 행 추가</button>
+                </div>
+
+                <div class="edit-actions">
+                    <button type="submit" class="primary-btn">상품 저장</button>
+                    <button id="cancelEditBtn" type="button" class="secondary-btn">수정 취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="./admin.js"></script>
+</body>
+</html>

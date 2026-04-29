@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>Vibe Smart Store Simulator</title>
+    <meta
+            name="description"
+            content="모바일 스마트 스토어 시뮬레이션, 상품 검색, 장바구니, 회원가입/로그인, 관리자 상품 관리, 주문 내역 조회 기능 제공"
+    />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+<a class="skip-link" href="#mainContent">본문 바로가기</a>
+
+<div id="app">
+    <header class="site-header">
+        <div class="header-top">
+            <button id="logoBtn" class="logo" type="button" aria-label="홈으로 이동">
+                Vibe Store
+            </button>
+
+            <form id="searchForm" class="search-form" role="search">
+                <label class="sr-only" for="searchInput">상품 검색</label>
+                <input
+                        id="searchInput"
+                        type="search"
+                        placeholder="상품명 검색"
+                        autocomplete="off"
+                        maxlength="100"
+                />
+                <button type="submit" class="search-btn" aria-label="검색">🔍</button>
+            </form>
+
+            <div class="header-actions">
+                <button id="mypageBtn" class="icon-btn" type="button">마이페이지</button>
+                <button id="logoutBtn" class="icon-btn hidden" type="button">로그아웃</button>
+                <button id="adminBtn" class="icon-btn hidden" type="button">관리자</button>
+                <button id="cartBtn" class="icon-btn cart-btn" type="button" aria-label="장바구니 열기">
+                    🛒
+                    <span id="cartBadge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+
+        <nav class="category-nav" aria-label="상품 카테고리">
+            <div id="categoryTabs" class="category-tabs"></div>
+        </nav>
+    </header>
+
+    <main id="mainContent" class="main-content">
+        <section class="store-summary" aria-label="리스트 제어">
+            <div class="summary-left">
+                <strong>총 상품 수</strong>
+                <span id="productCount">0</span>
+            </div>
+
+            <div class="summary-right">
+                <label for="sortSelect">정렬</label>
+                <select id="sortSelect">
+                    <option value="latest">신상품순</option>
+                    <option value="priceAsc">낮은 가격순</option>
+                    <option value="priceDesc">높은 가격순</option>
+                    <option value="nameAsc">이름순</option>
+                </select>
+            </div>
+        </section>
+
+        <section aria-label="상품 목록">
+            <div id="productGrid" class="product-grid"></div>
+            <div id="emptyState" class="empty-state hidden">등록/검색된 상품이 없습니다</div>
+        </section>
+    </main>
+</div>
+
+<div id="productModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close="product"></div>
+    <div class="modal-panel">
+        <div class="modal-header">
+            <h2>상품 상세</h2>
+            <button class="modal-close" type="button" data-close="product">✕</button>
+        </div>
+        <div id="productModalBody" class="modal-body"></div>
+    </div>
+</div>
+
+<div id="cartModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close="cart"></div>
+    <div class="modal-panel">
+        <div class="modal-header">
+            <h2>장바구니</h2>
+            <button class="modal-close" type="button" data-close="cart">✕</button>
+        </div>
+        <div id="cartModalBody" class="modal-body"></div>
+    </div>
+</div>
+
+<script src="./script.js"></script>
+</body>
+</html>
